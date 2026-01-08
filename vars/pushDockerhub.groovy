@@ -1,6 +1,6 @@
 def call(Map config = [:]) {
 
-    def image       = config.get('image', 'vishvas1410/notes-app')
+    def image       = config.get('imageName', 'vishvas1410/notes-app')
     def tag         = config.get('tag', 'latest')
     def credentials = config.get('credentialsId', 'dockerHubCred')
 
