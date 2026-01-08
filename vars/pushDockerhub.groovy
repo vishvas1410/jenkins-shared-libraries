@@ -1,25 +1,20 @@
 def call(Map config = [:]) {
 
-    def imageName     = config.get('imageName')
-    def imageTag      = config.get('tag', 'latest')
-    def credentialsId = config.get('credentialsId', 'dockerHubCred')
+    def image       = config.get('image', 'vishvas1410/notes-app')
+    def tag         = config.get('tag', 'latest')
+    def credentials = config.get('credentialsId', 'dockerHubCred')
 
-    if (!imageName) {
-        error "❌ imageName is required for push.groovy"
-    }
-
-    echo 'Pushing Docker image to Docker Hub...'
+    echo "Pushing Docker image: ${image}:${tag}"
 
     withCredentials([usernamePassword(
-        credentialsId: credentialsId,
+        credentialsId: credentials,
         usernameVariable: 'DOCKER_USER',
         passwordVariable: 'DOCKER_PASS'
     )]) {
 
         sh """
             echo "\$DOCKER_PASS" | docker login -u "\$DOCKER_USER" --password-stdin
-            docker tag ${imageName}:${imageTag} \$DOCKER_USER/${imageName}:${imageTag}
-            docker push \$DOCKER_USER/${imageName}:${imageTag}
+            docker push ${image}:${tag}
         """
     }
 
